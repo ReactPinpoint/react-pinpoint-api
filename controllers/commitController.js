@@ -8,7 +8,6 @@ commitController.getCommit = async (req, res, next) => {
     if (!project_id) return next({ err: 'Invalid project.'});
     const project = await Project.findByPk(project_id, { include: Commit });
     const { commits } = project;
-    console.log(project.commits)
     res.locals.commits = commits;
     next();
   } catch (err) {
