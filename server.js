@@ -18,7 +18,7 @@ const projectRouter = require('./routes/project');
 const commitRouter = require('./routes/commit');
 app.use('/api/user', isAuthorized, userRouter);
 app.use('/api/project', isAuthorized, projectRouter);
-app.use('/api/commit', isAuthorized, commitRouter);
+app.use('/api/commit', commitRouter);
 
 app.post('/api/login', login, (req, res) => {
   res.json(res.locals.loggedIn);
