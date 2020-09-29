@@ -13,6 +13,7 @@ app.use(cookieParser());
 // TODO change the dev environment request origin once its set up
 app.use(cors({
   origin: 'http://localhost:3000',
+  credentials: true,
 }));
 
 // app.options('/api/login', cors());
