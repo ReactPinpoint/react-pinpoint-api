@@ -10,7 +10,9 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json({ extended: false }));
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+  origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://reactpp.com',
+}));
 
 // app.options('/api/login', cors());
 
@@ -25,7 +27,7 @@ app.use('/api/user', isAuthorized, userRouter);
 app.use('/api/project', isAuthorized, projectRouter);
 app.use('/api/commit', commitRouter);
 
-app.post('/api/login', cors(), login, (req, res) => {
+app.post('/api/login', login, (req, res) => {
   res.json(res.locals.loggedIn);
 });
 
