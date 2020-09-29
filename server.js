@@ -12,7 +12,7 @@ app.use(express.json({ extended: false }));
 app.use(cookieParser());
 // app.use(cors());
 
-app.options('/api/login', cors());
+// app.options('/api/login', cors());
 
 const isAuthorized = require('./auth/auth');
 const login = require('./auth/login');
@@ -25,7 +25,7 @@ app.use('/api/user', isAuthorized, userRouter);
 app.use('/api/project', isAuthorized, projectRouter);
 app.use('/api/commit', commitRouter);
 
-app.post('/api/login', login, (req, res) => {
+app.post('/api/login', cors(), login, (req, res) => {
   res.json(res.locals.loggedIn);
 });
 
