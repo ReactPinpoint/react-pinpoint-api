@@ -20,7 +20,7 @@ const userRouter = require('./routes/user');
 const projectRouter = require('./routes/project');
 const commitRouter = require('./routes/commit');
 app.use('/api/user', isAuthorized, userRouter);
-app.use('/api/project', projectRouter);
+app.use('/api/project', isAuthorized, projectRouter);
 app.use('/api/commit', commitRouter);
 
 app.post('/api/login', login, (req, res) => {
