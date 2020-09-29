@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json({ extended: false }));
 app.use(cookieParser());
-// app.use(cors());
+app.use(cors());
 
 // app.options('/api/login', cors());
 
