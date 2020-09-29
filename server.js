@@ -10,8 +10,9 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json({ extended: false }));
 app.use(cookieParser());
+// TODO change the dev environment request origin once its set up
 app.use(cors({
-  origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://reactpp.com',
+  origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://localhost:3000',
 }));
 
 // app.options('/api/login', cors());
