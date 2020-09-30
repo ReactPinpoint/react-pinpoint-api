@@ -9,7 +9,8 @@ const register = async (req, res, next) => {
       res.locals.newUser = { err: 'User exists'};
       return next();
     }
-    const user = await User.create({ username, password })
+    const user = await User.create({ username, password });
+    if (!user) return next({ err: 'Error creating user.'});
     const payload = { user_id: user.user_id }
     const secret = process.env.SECRET;
     const token = jwt.sign(payload, secret, { expiresIn: '1h'});
