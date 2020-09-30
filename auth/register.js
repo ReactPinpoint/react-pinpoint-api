@@ -10,6 +10,10 @@ const register = async (req, res, next) => {
       return next();
     }
     const user = await User.create({ username, password })
+    const payload = { user_id: user.user_id }
+    const secret = process.env.SECRET;
+    const token = jwt.sign(payload, secret, { expiresIn: '1h'});
+    res.cookie('token', token, { httpOnly: true, sameSite: 'none', secure: true });
     res.locals.newUser = { user_id: user.user_id };
     next();
   } catch (err) {
