@@ -70,10 +70,26 @@ Project.init({
   timestamps: false,
 });
 
+class Change extends Model {};
+
+Change.init({
+  change_id: {
+    type: DataTypes.UUID,
+    defaultValue: Sequelize.UUIDV4,
+    allowNull:false,
+    primaryKey: true,
+    unique: true,
+  }
+}, { 
+  sequelize, 
+  modelName: 'change',
+  timestamps: false,
+})
+
 class Commit extends Model {};
 
 Commit.init({
-  id: {
+  commit_id: {
     type: DataTypes.UUID,
     defaultValue: Sequelize.UUIDV4,
     allowNull:false,
@@ -113,9 +129,15 @@ Commit.init({
 User.hasMany(Project);
 Project.belongsTo(User);
 
-Project.hasMany(Commit);
-Commit.belongsTo(Project);
+// Project.hasMany(Commit);
+// Commit.belongsTo(Project);
+
+Project.hasMany(Change);
+Change.belongsTo(Project);
+
+Change.hasMany(Commit);
+Commit.belongsTo(Change);
 
 module.exports = {
-  User, Project, Commit,
+  User, Project, Change, Commit,
 };
