@@ -17,6 +17,8 @@ projectController.getProject = async (req, res, next) => {
 projectController.addProject = async (req, res, next) => {
   try {
     const { name, description } = req.body;
+    if (!name) return next({ err: "Project name is null."});
+    if (!description) return next({ err: "Project description is null."})
     const project = await Project.create({ 
       name, 
       description,
