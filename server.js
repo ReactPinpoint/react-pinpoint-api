@@ -46,8 +46,7 @@ app.get('/', isAuthorized, (req, res) => {
 
 // global error handler
 app.use((err, req, res, next) => {
-  if (process.env.NODE_ENV !== 'production') {
-    console.log(err);
+  if (process.env.NODE_ENV === 'development') {
     console.log('Error:', err);
   }
   return res.status(400).json(err);
