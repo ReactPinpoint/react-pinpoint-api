@@ -25,7 +25,8 @@ const login = async (req, res, next) => {
     const payload = { user_id: user.user_id }
     const secret = process.env.SECRET;
     const token = jwt.sign(payload, secret, { expiresIn: '1h'});
-    res.cookie('token', token, { httpOnly: true, sameSite: 'none', secure: true });
+    if (process.env.NODE_ENV === 'production') res.cookie('token', token, { httpOnly: true, sameSite: 'none', secure: true });
+    else res.cookie('token', token, { httpOnly: true })
     res.locals.loggedIn = { loggedIn: validated };
     next();
   } catch (err) {
