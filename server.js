@@ -28,6 +28,10 @@ app.use('/api/user', isAuthorized, userRouter);
 app.use('/api/project', isAuthorized, projectRouter);
 app.use('/api/commit', commitRouter);
 
+app.get('/api/auth', isAuthorized, (req, res) => {
+  res.json(res.locals.user_id);
+})
+
 app.post('/api/login', login, (req, res) => {
   res.json(res.locals.loggedIn);
 });
