@@ -2,7 +2,7 @@ const { Model, DataTypes, Sequelize } = require('sequelize');
 const bcrypt = require('bcrypt');
 const sequelize = require('./index');
 
-class User extends Model {};
+class User extends Model {}
 
 const hashPassword = async (user) => {
   try {
@@ -14,27 +14,30 @@ const hashPassword = async (user) => {
   }
 };
 
-User.init({
-  user_id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    allowNull:false,
-    primaryKey: true,
-    unique: true,
+User.init(
+  {
+    user_id: {
+      type: DataTypes.UUID,
+      defaultValue: Sequelize.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+      unique: true,
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
-  username: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-}, { 
-  sequelize, 
-  modelName: 'user', 
-  timestamps: false,
-});
+  {
+    sequelize,
+    modelName: 'user',
+    timestamps: false,
+  }
+);
 
 User.beforeCreate(hashPassword);
 
@@ -46,85 +49,98 @@ User.prototype.validatePassword = async (password, user) => {
   }
 };
 
-class Project extends Model {};
+class Project extends Model {}
 
-Project.init({
-  project_id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    allowNull:false,
-    primaryKey: true,
-    unique: true,
+Project.init(
+  {
+    project_id: {
+      type: DataTypes.UUID,
+      defaultValue: Sequelize.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+      unique: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  description: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-}, { 
-  sequelize, 
-  modelName: 'project',
-  timestamps: false,
-});
-
-class Change extends Model {};
-
-Change.init({
-  change_id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    allowNull:false,
-    primaryKey: true,
-    unique: true,
+  {
+    sequelize,
+    modelName: 'project',
+    timestamps: false,
   }
-}, { 
-  sequelize, 
-  modelName: 'change',
-  timestamps: false,
-})
+);
 
-class Commit extends Model {};
+class Change extends Model {}
 
-Commit.init({
-  commit_id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    allowNull:false,
-    primaryKey: true,
-    unique: true,
+Change.init(
+  {
+    change_id: {
+      type: DataTypes.UUID,
+      defaultValue: Sequelize.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+      unique: true,
+    },
   },
-  component_id: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
+  {
+    sequelize,
+    modelName: 'change',
+    timestamps: false,
+  }
+);
+
+class Commit extends Model {}
+
+Commit.init(
+  {
+    commit_id: {
+      type: DataTypes.UUID,
+      defaultValue: Sequelize.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+      unique: true,
+    },
+    component_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    component_name: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    children_ids: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      allowNull: true,
+    },
+    self_base_duration: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    parent_component_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    component_state: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
+    sibling_component_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
   },
-  component_name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  self_base_duration: {
-    type: DataTypes.FLOAT,
-    allowNull: false,
-  },
-  parent_component_id: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-  },
-  component_state: {
-    type: DataTypes.JSON,
-    allowNull: true,
-  },
-  sibling_component_id: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-  },
-}, { 
-  sequelize, 
-  modelName: 'commit',
-  timestamps: false,
-});
+  {
+    sequelize,
+    modelName: 'commit',
+    timestamps: false,
+  }
+);
 
 User.hasMany(Project);
 Project.belongsTo(User);
@@ -139,5 +155,8 @@ Change.hasMany(Commit);
 Commit.belongsTo(Change);
 
 module.exports = {
-  User, Project, Change, Commit,
+  User,
+  Project,
+  Change,
+  Commit,
 };
