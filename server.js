@@ -31,8 +31,8 @@ if (process.env.NODE_ENV === 'development') {
 
 // Routing
 const isAuthorized = require('./auth/auth');
-const login = require('./auth/login');
 const register = require('./auth/register');
+const login = require('./auth/login');
 const logout = require('./auth/logout');
 const userRouter = require('./routes/user');
 const projectRouter = require('./routes/project');
@@ -45,12 +45,12 @@ app.get('/api/auth', isAuthorized, (req, res) => {
   res.json(res.locals.user_id);
 });
 
-app.post('/api/login', login, (req, res) => {
-  res.json(res.locals.loggedIn);
-});
-
 app.post('/api/register', register, (req, res) => {
   res.json(res.locals.newUser);
+});
+
+app.post('/api/login', login, (req, res) => {
+  res.json(res.locals.loggedIn);
 });
 
 app.get('/api/logout', logout, (req, res) => {
