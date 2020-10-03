@@ -9,7 +9,12 @@ const sequelize = new Sequelize(dbname, username, password, {
   host: process.env.DB_URL,
   port: dbport,
   dialect: 'postgres',
-  ssl: 'Amazon RDS',
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
+  }
 });
 
 (async () => {
