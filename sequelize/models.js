@@ -98,7 +98,7 @@ Commit.init({
   },
   component_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   component_name: {
     type: DataTypes.STRING,
@@ -110,15 +110,15 @@ Commit.init({
   },
   parent_component_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   component_state: {
     type: DataTypes.JSON,
-    allowNull: false,
+    allowNull: true,
   },
   sibling_component_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
 }, { 
   sequelize, 
