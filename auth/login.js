@@ -4,15 +4,15 @@ const jwt = require('jsonwebtoken');
 const login = async (req, res, next) => {
   const invalidate = () => {
     res.locals.loggedIn = { loggedIn: false };
-    res.clearCookie('token');
-  }
+    res.clearCookie('token', { path: '/' });
+  };
   try {
     const { username, password } = req.body;
     if (!username || !password) {
       res.locals.loggedIn = { loggedIn: false };
       return next();
     }
-    const user = await User.findOne({ where: { username } })
+    const user = await User.findOne({ where: { username } });
     if (!user) {
       invalidate();
       return next();
@@ -22,16 +22,16 @@ const login = async (req, res, next) => {
       invalidate();
       return next();
     }
-    const payload = { user_id: user.user_id }
+    const payload = { user_id: user.user_id };
     const secret = process.env.SECRET;
-    const token = jwt.sign(payload, secret, { expiresIn: '1h'});
+    const token = jwt.sign(payload, secret, { expiresIn: '1h' });
     if (process.env.NODE_ENV === 'production') res.cookie('token', token, { httpOnly: true, sameSite: 'none', secure: true });
-    else res.cookie('token', token, { httpOnly: true })
+    else res.cookie('token', token, { httpOnly: true });
     res.locals.loggedIn = { loggedIn: validated };
     next();
   } catch (err) {
     next(err);
   }
-}
+};
 
 module.exports = login;
