@@ -46,15 +46,15 @@ app.get('/api/auth', isAuthorized, (req, res) => {
 });
 
 app.post('/api/register', register, (req, res) => {
-  res.status(201).res.json(res.locals.newUser);
+  res.status(201).json(res.locals.newUser);
 });
 
 app.post('/api/login', login, (req, res) => {
-  res.status(200).res.json(res.locals.loggedIn);
+  res.status(200).json(res.locals.loggedIn);
 });
 
 app.get('/api/logout', logout, (req, res) => {
-  res.status(200).res.json(res.locals.loggedOut);
+  res.status(200).json(res.locals.loggedOut);
 });
 
 app.get('/', isAuthorized, (req, res) => {
