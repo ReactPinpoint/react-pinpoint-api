@@ -41,7 +41,7 @@ const isAuthorized = async (req, res, next) => {
     const user = await User.findByPk(user_id);
 
     if (!user) {
-      return next({ statusCode: 401, message: 'You are not authorized to view this page.' });
+      return clearTokenAndNext();
     }
 
     res.locals.user_id = user.user_id;

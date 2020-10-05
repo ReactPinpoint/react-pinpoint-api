@@ -6,31 +6,41 @@ const login = async (req, res, next) => {
     res.locals.loggedIn = { loggedIn: false };
     res.clearCookie('token', { path: '/' });
   };
+
   try {
     const { username, password } = req.body;
     if (!username || !password) {
       res.locals.loggedIn = { loggedIn: false };
       return next();
     }
+
     const user = await User.findOne({ where: { username } });
+
     if (!user) {
       invalidate();
       return next();
     }
+
     const validated = await user.validatePassword(password, user);
     if (!validated) {
       invalidate();
       return next();
     }
+
     const payload = { user_id: user.user_id };
     const secret = process.env.SECRET;
     const token = jwt.sign(payload, secret, { expiresIn: '1h' });
-    if (process.env.NODE_ENV === 'production') res.cookie('token', token, { httpOnly: true, sameSite: 'none', secure: true });
-    else res.cookie('token', token, { httpOnly: true });
+
+    if (process.env.NODE_ENV === 'production') {
+      res.cookie('token', token, { httpOnly: true, sameSite: 'none', secure: true });
+    } else {
+      res.cookie('token', token, { httpOnly: true });
+    }
+
     res.locals.loggedIn = { loggedIn: validated };
-    next();
+    return next();
   } catch (err) {
-    next(err);
+    return next({ statusCode: 400, message: err.message });
   }
 };
 
