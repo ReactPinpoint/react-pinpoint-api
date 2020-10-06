@@ -9,12 +9,14 @@ const register = async (req, res, next) => {
       return next({ statusCode: 400, message: `The email and password field is required.` });
     }
 
-    if (password.length < 8) {
-      return next({ statusCode: 400, message: `The password must be at least 8 characters long.` });
-    }
+    if (process.env.NODE_ENV === 'production') {
+      if (password.length < 8) {
+        return next({ statusCode: 400, message: `The password must be at least 8 characters long.` });
+      }
 
-    if (password.length > 64) {
-      return next({ statusCode: 400, message: `The password cannot be more than 64 characters long.` });
+      if (password.length > 64) {
+        return next({ statusCode: 400, message: `The password cannot be more than 64 characters long.` });
+      }
     }
 
     const results = await User.findAll({ where: { username } });
