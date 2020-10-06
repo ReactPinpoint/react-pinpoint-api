@@ -6,7 +6,15 @@ const register = async (req, res, next) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
-      return next({ message: `The email and password field is required.` });
+      return next({ statusCode: 400, message: `The email and password field is required.` });
+    }
+
+    if (password.length < 8) {
+      return next({ statusCode: 400, message: `The password must be at least 8 characters long.` });
+    }
+
+    if (password.length > 64) {
+      return next({ statusCode: 400, message: `The password cannot be more than 64 characters long.` });
     }
 
     const results = await User.findAll({ where: { username } });
