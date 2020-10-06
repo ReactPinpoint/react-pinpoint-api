@@ -42,19 +42,19 @@ app.use('/api/project', isAuthorized, projectRouter);
 app.use('/api/commit', commitRouter);
 
 app.get('/api/auth', isAuthorized, (req, res) => {
-  res.status(200).json(res.locals.user_id);
+  res.status(200).json({ success: true, user: res.locals.user_id });
 });
 
 app.post('/api/register', register, (req, res) => {
-  res.status(201).json(res.locals.newUser);
+  res.status(201).json({ success: true, user: res.locals.newUser });
 });
 
 app.post('/api/login', login, (req, res) => {
-  res.status(200).json(res.locals.loggedIn);
+  res.status(200).json({ success: true, user: res.locals.loggedIn });
 });
 
 app.get('/api/logout', logout, (req, res) => {
-  res.status(200).json(res.locals.loggedOut);
+  res.status(200).json({ success: true, user: res.locals.loggedOut });
 });
 
 app.get('/', isAuthorized, (req, res) => {

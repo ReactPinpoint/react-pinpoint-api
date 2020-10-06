@@ -2,14 +2,10 @@ const { User } = require('../sequelize/models');
 const jwt = require('jsonwebtoken');
 
 const isAuthorized = async (req, res, next) => {
-  // Default to no user logged in
-  req.session = null;
-  req.user = null;
-
   // Helper method to clear a token and invoke the next middleware
   const clearTokenAndNext = () => {
     res.clearCookie('token');
-    return next({ statusCode: 401, message: 'You are not authorized to view this page.' });
+    return next({ success: false, statusCode: 401, message: 'You are not authorized to view this page.' });
   };
 
   try {
