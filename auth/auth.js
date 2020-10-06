@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const isAuthorized = async (req, res, next) => {
   // Helper method to clear a token and invoke the next middleware
   const clearTokenAndNext = () => {
-    res.clearCookie('token');
+    res.clearCookie('token', { path: '/' });
     return next({ success: false, statusCode: 401, message: 'You are not authorized to view this page.' });
   };
 
