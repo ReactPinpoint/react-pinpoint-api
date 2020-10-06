@@ -5,26 +5,24 @@ const login = async (req, res, next) => {
   const invalidate = () => {
     res.locals.loggedIn = { loggedIn: false };
     res.clearCookie('token', { path: '/' });
+    return next({ success: false, statusCode: 401, message: 'The email or password you entered is invalid.' });
   };
 
   try {
     const { username, password } = req.body;
     if (!username || !password) {
-      res.locals.loggedIn = { loggedIn: false };
-      return next();
+      invalidate();
     }
 
     const user = await User.findOne({ where: { username } });
 
     if (!user) {
       invalidate();
-      return next();
     }
 
     const validated = await user.validatePassword(password, user);
     if (!validated) {
       invalidate();
-      return next();
     }
 
     const payload = { user_id: user.user_id };
