@@ -9,7 +9,6 @@ commitController.getCommit = async (req, res, next) => {
     const project = await Project.findByPk(project_id, {
       include: { all: true, nested: true },
     });
-    // console.log(project)
     if (!project)
       return next({ err: 'An error occured. Please try again later.' });
     const { changes } = project;
@@ -45,24 +44,6 @@ commitController.addCommit = async (req, res, next) => {
         component_state,
         sibling_component_id,
       } = commit;
-      // if (!Object.hasOwnProperty.call(commit, 'component_id') || !component_id) return next({ err: 'component_id is missing.'});
-      // if (
-      //   !Object.hasOwnProperty.call(commit, 'component_name') ||
-      //   !component_name
-      // )
-      //   return next({ err: 'component_name is missing.' });
-      // if (
-      //   !Object.hasOwnProperty.call(commit, 'self_base_duration') ||
-      //   !self_base_duration
-      // )
-      //   return next({ err: 'self_base_duration is missing.' });
-      // // if (!Object.hasOwnProperty.call(commit, 'parent_component_id') || !parent_component_id) return next({ err: 'parent_component_id is missing.'});
-      // if (
-      //   !Object.hasOwnProperty.call(commit, 'component_state') ||
-      //   !component_state
-      // )
-      //   return next({ err: 'component_state is missing.' });
-      // if (!Object.hasOwnProperty.call(commit, 'sibling_component_id') || !sibling_component_id) return next({ err: 'sibling_component_id is missing.'});
     }
 
     // if request data is validated then create the change and associate with project_id
@@ -71,9 +52,7 @@ commitController.addCommit = async (req, res, next) => {
       return next({ err: 'An error occured. Please try again later.' });
     change.setProject(project_id);
     const { change_id } = change;
-    // console.log('change_id ->',  change_id)
-    // console.log('change ->', change);
-
+    
     // if change sucessfully created, create the commits and associate them with the change_id
     const commit_ids = [];
     for (let j = 0; j < changes.length; j += 1) {
